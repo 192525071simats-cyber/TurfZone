@@ -217,3 +217,5 @@ python -m unittest discover -s tests -p "test_*.py" -v
 ## 📬 Postman Collection
 
 Import `Postman_Collection.json` into Postman or Insomnia. It includes pre-configured endpoints, request bodies, and variable tokens for quick testing.
+## Booking Feature
+TurfZone supports online turf slot booking.

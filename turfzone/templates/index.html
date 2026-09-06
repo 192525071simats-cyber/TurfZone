@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+
+{% block title %}TurfZone — Book Your Turf. Play Your Game.{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <div style="text-align: center; max-width: 840px; margin: 0 auto 3rem;">
+      <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--primary-light); border: 1px solid rgba(16, 185, 129, 0.3); padding: 0.4rem 1rem; border-radius: var(--radius-full); margin-bottom: 1.5rem;">
+        <span style="font-size: 0.9rem;">⚡</span>
+        <span style="font-size: 0.85rem; font-weight: 700; color: #34d399; text-transform: uppercase; letter-spacing: 0.5px;">Chennai's Premier Sports Facility Network</span>
+      </div>
+
+      <h1 class="hero-title">
+        Book Your Turf. <br><span class="highlight">Play Your Game.</span>
+      </h1>
+
+      <p class="hero-subtitle" style="margin: 0 auto 2.5rem;">
+        Discover and instantly reserve verified synthetic turf arenas, floodlit box cricket pitches, and tournament courts across Chennai with guaranteed conflict-free slot booking.
+      </p>
+
+      <!-- Interactive Quick Search Bar -->
+      <form id="home-search-form" class="search-bar-wrap" style="text-align: left;">
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="form-label">📍 Location / Area</label>
+          <select id="search-location" class="form-control">
+            <option value="">All Chennai Areas</option>
+            <option value="Velachery">Velachery</option>
+            <option value="Marina">Marina / Triplicane</option>
+            <option value="ECR">ECR / Injambakkam</option>
+            <option value="Anna Nagar">Anna Nagar</option>
+            <option value="OMR">OMR / Sholinganallur</option>
+            <option value="T. Nagar">T. Nagar</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="form-label">⚽ Sport Category</label>
+          <select id="search-sport" class="form-control">
+            <option value="">All Sports</option>
+            <option value="Football">Football</option>
+            <option value="Cricket">Cricket / Box Cricket</option>
+            <option value="Badminton">Badminton</option>
+            <option value="Tennis">Tennis</option>
+            <option value="Basketball">Basketball</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="form-label">📅 Date</label>
+          <input type="date" id="search-date" class="form-control">
+        </div>
+
+        <div>
+          <button type="submit" class="btn btn-primary btn-block" style="height: 48px;">
+            🔍 Find Turf
+          </button>
+        </div>
+      </form>
+
+      <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 2rem;">
+        <a href="/turfs" class="btn btn-primary btn-lg">Find a Turf</a>
+        <a href="/tournaments" class="btn btn-secondary btn-lg">Explore Tournaments</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sports Categories Quick Filter -->
+<section style="padding: 2.5rem 0; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); background: var(--bg-card);">
+  <div class="container">
+    <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap;">
+      <span style="font-weight: 700; font-size: 0.9rem; color: var(--text-secondary); margin-right: 0.5rem;">Popular Sports:</span>
+      <a href="/turfs?sport=Football" class="btn btn-secondary btn-sm" style="border-radius: var(--radius-full);">⚽ Football</a>
+      <a href="/turfs?sport=Cricket" class="btn btn-secondary btn-sm" style="border-radius: var(--radius-full);">🏏 Box Cricket</a>
+      <a href="/turfs?sport=Basketball" class="btn btn-secondary btn-sm" style="border-radius: var(--radius-full);">🏀 Basketball</a>
+      <a href="/turfs?sport=Badminton" class="btn btn-secondary btn-sm" style="border-radius: var(--radius-full);">🏸 Badminton</a>
+      <a href="/turfs?sport=Tennis" class="btn btn-secondary btn-sm" style="border-radius: var(--radius-full);">🎾 Tennis</a>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Turfs Section -->
+<section style="padding: 5rem 0;">
+  <div class="container">
+    <div class="section-header" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <h2 class="section-title">Top Rated Sports Turfs</h2>
+        <p class="section-subtitle">Real-time availability at Chennai's most acclaimed sports facilities.</p>
+      </div>
+      <a href="/turfs" class="btn btn-outline btn-sm">View All Turfs →</a>
+    </div>
+
+    <div class="turfs-grid" id="featured-turfs-container">
+      <div class="spinner" style="grid-column: 1 / -1;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works Section -->
+<section style="padding: 5rem 0; background: var(--bg-surface); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+  <div class="container">
+    <div class="section-header" style="text-align: center; max-width: 600px; margin: 0 auto 3.5rem;">
+      <h2 class="section-title">How TurfZone Works</h2>
+      <p class="section-subtitle">Reserve your favorite sports venue in 4 frictionless steps.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem;">
+      <div class="card" style="padding: 2rem; text-align: center; background: var(--bg-card);">
+        <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; margin: 0 auto 1.5rem; border: 1px solid rgba(16, 185, 129, 0.3);">1</div>
+        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem;">Search Arenas</h3>
+        <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5;">Filter by your favorite sport, preferred neighborhood, and budget.</p>
+      </div>
+
+      <div class="card" style="padding: 2rem; text-align: center; background: var(--bg-card);">
+        <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; margin: 0 auto 1.5rem; border: 1px solid rgba(16, 185, 129, 0.3);">2</div>
+        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem;">Inspect Details</h3>
+        <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5;">Check photos, amenities, user reviews, and floodlight configurations.</p>
+      </div>
+
+      <div class="card" style="padding: 2rem; text-align: center; background: var(--bg-card);">
+        <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; margin: 0 auto 1.5rem; border: 1px solid rgba(16, 185, 129, 0.3);">3</div>
+        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem;">Choose Real Slot</h3>
+        <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5;">Select available hourly slots calculated directly from live database records.</p>
+      </div>
+
+      <div class="card" style="padding: 2rem; text-align: center; background: var(--bg-card);">
+        <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; margin: 0 auto 1.5rem; border: 1px solid rgba(16, 185, 129, 0.3);">4</div>
+        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem;">Instant Booking</h3>
+        <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5;">Get guaranteed confirmation with unique booking reference TZ-XXXXX.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Platform Benefits Grid -->
+<section style="padding: 5rem 0;">
+  <div class="container">
+    <div class="section-header" style="text-align: center; max-width: 600px; margin: 0 auto 3.5rem;">
+      <h2 class="section-title">Built for Serious Athletes & Casual Teams</h2>
+      <p class="section-subtitle">Everything you need to organize matches, leagues, and tournaments.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.75rem;">
+      <div class="card" style="padding: 1.75rem; display: flex; gap: 1.25rem;">
+        <div class="stat-icon emerald">⚡</div>
+        <div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem;">Zero Double-Bookings</h3>
+          <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5;">Transaction-safe concurrency locking guarantees your reserved hour is 100% yours.</p>
+        </div>
+      </div>
+
+      <div class="card" style="padding: 1.75rem; display: flex; gap: 1.25rem;">
+        <div class="stat-icon cyan">🏆</div>
+        <div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem;">Tournament Marketplace</h3>
+          <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5;">Register your squad for city championships, box cricket cups, and football leagues.</p>
+        </div>
+      </div>
+
+      <div class="card" style="padding: 1.75rem; display: flex; gap: 1.25rem;">
+        <div class="stat-icon purple">🤖</div>
+        <div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem;">Turf-Bot AI Assistance</h3>
+          <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5;">Ask Turf-Bot to find cheapest rates, check your active reservations, or locate nearby turfs.</p>
+        </div>
+      </div>
+
+      <div class="card" style="padding: 1.75rem; display: flex; gap: 1.25rem;">
+        <div class="stat-icon amber">🔄</div>
+        <div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem;">Self-Service Cancellation</h3>
+          <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5;">Plans changed? Cancel any upcoming booking from your dashboard and release the slot.</p>
+        </div>
+      </div>
+
+      <div class="card" style="padding: 1.75rem; display: flex; gap: 1.25rem;">
+        <div class="stat-icon blue">🛡️</div>
+        <div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem;">Admin Control Center</h3>
+          <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5;">Facility owners can manage rates, slot schedules, tournaments, and real-time revenue.</p>
+        </div>
+      </div>
+
+      <div class="card" style="padding: 1.75rem; display: flex; gap: 1.25rem;">
+        <div class="stat-icon emerald">📍</div>
+        <div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem;">Prime Chennai Locations</h3>
+          <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5;">Handpicked arenas in Velachery, Marina, ECR, Anna Nagar, OMR, and T. Nagar.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action Banner -->
+<section style="padding: 4rem 0 5rem;">
+  <div class="container">
+    <div class="card" style="padding: 3.5rem 2rem; text-align: center; background: radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.2), var(--bg-card)); border-color: rgba(16, 185, 129, 0.4);">
+      <h2 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem;">Ready to Play Your Next Match?</h2>
+      <p style="font-size: 1.05rem; color: var(--text-secondary); max-width: 550px; margin: 0 auto 2rem;">Join hundreds of players booking verified sports arenas every single day.</p>
+      <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+        <a href="/turfs" class="btn btn-primary btn-lg">Explore Available Turfs</a>
+        <a href="/turf-bot" class="btn btn-secondary btn-lg">Chat with Turf-Bot</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/js/home.js"></script>
+{% endblock %}

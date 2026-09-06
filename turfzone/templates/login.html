@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Log In — TurfZone{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 4rem; padding-bottom: 5rem; max-width: 480px;">
+  
+  <div class="card" style="padding: 2.5rem 2rem;">
+    
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <div class="brand-logo" style="justify-content: center; margin-bottom: 0.75rem;">
+        <div class="brand-icon">⚡</div>
+        <span>Turf<span class="zone">Zone</span></span>
+      </div>
+      <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.25rem;">Welcome Back</h1>
+      <p style="font-size: 0.875rem; color: var(--text-secondary);">Log in to manage your turf bookings and squads.</p>
+    </div>
+
+    <!-- Quick Demo Logins Helper -->
+    <div style="background: var(--bg-surface); padding: 0.85rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; text-align: center;">
+      <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; font-weight: 600;">Quick Demo Login:</div>
+      <div style="display: flex; gap: 0.5rem; justify-content: center;">
+        <button type="button" onclick="fillDemo('user')" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; padding: 0.3rem 0.6rem;">👤 Demo User</button>
+        <button type="button" onclick="fillDemo('admin')" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; padding: 0.3rem 0.6rem;">🛡️ Demo Admin</button>
+      </div>
+    </div>
+
+    <form id="login-form">
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" id="login-email" class="form-control" placeholder="user@turfzone.com" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+      </div>
+
+      <button type="submit" id="login-submit-btn" class="btn btn-primary btn-block btn-lg" style="margin-top: 1rem;">
+        Log In
+      </button>
+    </form>
+
+    <div style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+      Don't have an account? <a href="/register" style="font-weight: 600;">Register here</a>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  function fillDemo(type) {
+    if (type === 'admin') {
+      document.getElementById('login-email').value = 'admin@turfzone.com';
+      document.getElementById('login-password').value = 'Admin@123';
+    } else {
+      document.getElementById('login-email').value = 'user@turfzone.com';
+      document.getElementById('login-password').value = 'User@123';
+    }
+  }
+
+  document.getElementById('login-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+
+    const btn = document.getElementById('login-submit-btn');
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = 'Signing In...';
+    }
+
+    const res = await Auth.login(email, password);
+
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = 'Log In';
+    }
+
+    if (res.success && res.user) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const nextUrl = urlParams.get('next');
+      
+      if (res.user.role === 'ADMIN') {
+        window.location.href = nextUrl || '/admin';
+      } else {
+        window.location.href = nextUrl || '/dashboard';
+      }
+    }
+  });
+</script>
+{% endblock %}

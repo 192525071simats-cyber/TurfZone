@@ -1,0 +1,369 @@
+{% extends 'base.html' %}
+
+{% block title %}Turf Details & Real-Time Booking — TurfZone{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 2.5rem; padding-bottom: 5rem;">
+  
+  <div id="turf-detail-container">
+    
+    <!-- Top Back Navigation -->
+    <div style="margin-bottom: 1.5rem;">
+      <a href="/turfs" style="color: var(--text-secondary); font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem;">
+        ← Back to Explore Turfs
+      </a>
+    </div>
+
+    <!-- Main Detail Grid -->
+    <div style="display: grid; grid-template-columns: 1fr 360px; gap: 2.5rem; align-items: flex-start;">
+      
+      <!-- Left Column: Media, Details, Slot Selection, Addons, Reviews -->
+      <div>
+        
+        <!-- Hero Image -->
+        <div class="card" style="margin-bottom: 2rem; overflow: hidden; height: 380px; position: relative;">
+          <img id="turf-hero-img" src="" alt="Turf" style="width: 100%; height: 100%; object-fit: cover;">
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 2rem; background: linear-gradient(to top, rgba(11, 15, 25, 0.95), transparent);">
+            <div id="turf-sports-tags" style="display: flex; gap: 0.5rem; margin-bottom: 0.6rem;"></div>
+            <h1 id="turf-name" style="font-size: 2.2rem; font-weight: 800; color: #fff; margin-bottom: 0.3rem;">Loading...</h1>
+            <div style="display: flex; align-items: center; gap: 1rem; color: var(--text-secondary); font-size: 0.95rem;">
+              <span id="turf-location">📍 Location</span>
+              <span>•</span>
+              <span id="turf-rating" style="color: #fbbf24; font-weight: 700;">⭐ Rating</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Playing Conditions Widget -->
+        <div class="card" style="padding: 1.25rem 1.5rem; margin-bottom: 2rem; background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(16, 185, 129, 0.08)); border: 1px solid rgba(6, 182, 212, 0.25);">
+          <div style="font-size: 0.8rem; font-weight: 700; color: #22d3ee; text-transform: uppercase; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem;">
+            <span>🌤️</span> Real-Time Venue & Match Conditions
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1rem; font-size: 0.85rem;">
+            <div>
+              <div style="color: var(--text-muted); font-size: 0.75rem;">Temperature</div>
+              <div style="font-weight: 700; color: var(--text-primary);">29°C (Optimal)</div>
+            </div>
+            <div>
+              <div style="color: var(--text-muted); font-size: 0.75rem;">Surface Quality</div>
+              <div style="font-weight: 700; color: #34d399;">Monofilament Dry</div>
+            </div>
+            <div>
+              <div style="color: var(--text-muted); font-size: 0.75rem;">Floodlighting</div>
+              <div style="font-weight: 700; color: var(--text-primary);">4K High-Mast LED</div>
+            </div>
+            <div>
+              <div style="color: var(--text-muted); font-size: 0.75rem;">Capacity</div>
+              <div style="font-weight: 700; color: var(--text-primary);">100+ Spectators</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Address & Overview -->
+        <div class="card" style="padding: 1.75rem; margin-bottom: 2rem;">
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text-primary);">About this Facility</h3>
+          <p id="turf-desc" style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem; font-size: 0.95rem;"></p>
+          
+          <div style="background: var(--bg-surface); padding: 1rem 1.25rem; border-radius: var(--radius-md); display: flex; align-items: flex-start; gap: 0.75rem;">
+            <span style="font-size: 1.2rem;">📍</span>
+            <div>
+              <div style="font-weight: 700; font-size: 0.9rem; color: var(--text-primary);">Venue Address</div>
+              <div id="turf-address" style="color: var(--text-secondary); font-size: 0.85rem;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Amenities & Features -->
+        <div class="card" style="padding: 1.75rem; margin-bottom: 2rem;">
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary);">Included Facilities & Amenities</h3>
+          <ul id="turf-amenities-list" style="list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem;">
+          </ul>
+        </div>
+
+        <!-- Interactive Slot Booking Engine -->
+        <div class="card" style="padding: 1.75rem; border-color: rgba(16, 185, 129, 0.4); margin-bottom: 2rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+            <div>
+              <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--text-primary);">1. Choose Date & Time Slot</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary);">Availability updates instantly from our live reservation database.</p>
+            </div>
+            <div>
+              <span id="slot-count-badge" class="badge badge-emerald" style="padding: 0.4rem 0.85rem;">Checking Slots...</span>
+            </div>
+          </div>
+
+          <!-- Date Selector -->
+          <div style="margin-bottom: 1.5rem; max-width: 260px;">
+            <label class="form-label">📅 Choose Reservation Date</label>
+            <input type="date" id="booking-date-picker" class="form-control" style="font-weight: 600; color: #fff;">
+          </div>
+
+          <!-- Slot Legend -->
+          <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.2rem; font-size: 0.8rem; color: var(--text-secondary);">
+            <div style="display: flex; align-items: center; gap: 0.4rem;">
+              <span style="width: 12px; height: 12px; border-radius: 3px; background: rgba(16, 185, 129, 0.2); border: 1px solid var(--primary);"></span>
+              <span>Available</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.4rem;">
+              <span style="width: 12px; height: 12px; border-radius: 3px; background: var(--primary);"></span>
+              <span>Selected</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.4rem;">
+              <span style="width: 12px; height: 12px; border-radius: 3px; background: rgba(239, 68, 68, 0.2); border: 1px solid var(--accent-red);"></span>
+              <span>Booked (Unavailable)</span>
+            </div>
+          </div>
+
+          <!-- Time Slots Grid -->
+          <div class="slots-grid" id="slots-container">
+            <div class="spinner" style="grid-column: 1 / -1;"></div>
+          </div>
+        </div>
+
+        <!-- Optional Equipment Add-ons Section -->
+        <div class="card" style="padding: 1.75rem; margin-bottom: 2rem;">
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--text-primary);">2. Match Gear & Optional Add-ons</h3>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.25rem;">Upgrade your match with premium equipment ready at the venue upon arrival.</p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <label class="addon-item">
+              <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <input type="checkbox" class="addon-checkbox" value="Match Football / Leather Ball (+₹100)" style="accent-color: var(--primary); width: 18px; height: 18px;">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.9rem; color: var(--text-primary);">⚽ Match Football / Ball</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">Tournament grade FIFA / Leather ball</div>
+                </div>
+              </div>
+              <span style="font-weight: 700; color: #34d399; font-size: 0.9rem;">+₹100</span>
+            </label>
+
+            <label class="addon-item">
+              <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <input type="checkbox" class="addon-checkbox" value="Team Bibs & Vests (+₹150)" style="accent-color: var(--primary); width: 18px; height: 18px;">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.9rem; color: var(--text-primary);">🎽 Team Bibs & Vests</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">Set of 12 breathable neon vests</div>
+                </div>
+              </div>
+              <span style="font-weight: 700; color: #34d399; font-size: 0.9rem;">+₹150</span>
+            </label>
+
+            <label class="addon-item">
+              <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <input type="checkbox" class="addon-checkbox" value="Certified Match Referee (+₹350)" style="accent-color: var(--primary); width: 18px; height: 18px;">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.9rem; color: var(--text-primary);">🚩 Official Match Referee</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">Fair play officiating for competitive matches</div>
+                </div>
+              </div>
+              <span style="font-weight: 700; color: #34d399; font-size: 0.9rem;">+₹350</span>
+            </label>
+
+            <label class="addon-item">
+              <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <input type="checkbox" class="addon-checkbox" value="Energy & Hydration Pack (+₹200)" style="accent-color: var(--primary); width: 18px; height: 18px;">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.9rem; color: var(--text-primary);">💧 Hydration & Drinks Pack</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">6 chilled isotonic energy bottles</div>
+                </div>
+              </div>
+              <span style="font-weight: 700; color: #34d399; font-size: 0.9rem;">+₹200</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Customer Reviews & Rating Engine -->
+        <div class="card" style="padding: 1.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+            <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary);">Player Reviews & Feedback</h3>
+          </div>
+
+          <!-- Write a Review Form -->
+          <form id="submit-review-form" style="background: var(--bg-surface); padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 2rem; border: 1px solid var(--border-subtle);">
+            <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-primary);">Leave a Match Review</div>
+            
+            <div style="margin-bottom: 1rem;">
+              <label class="form-label" style="font-size: 0.8rem;">Your Rating</label>
+              <div class="star-rating-select" id="star-picker">
+                <span data-val="1" class="active">★</span>
+                <span data-val="2" class="active">★</span>
+                <span data-val="3" class="active">★</span>
+                <span data-val="4" class="active">★</span>
+                <span data-val="5" class="active">★</span>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label class="form-label" style="font-size: 0.8rem;">Your Experience & Turf Comments</label>
+              <textarea id="review-comment-input" class="form-control" placeholder="How was the turf bounce, lighting, facilities, and staff support?" required style="min-height: 70px;"></textarea>
+            </div>
+
+            <button type="submit" id="submit-review-btn" class="btn btn-primary btn-sm">Post Verified Review</button>
+          </form>
+
+          <!-- Reviews List -->
+          <div id="turf-reviews-list">
+            <div class="spinner"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Sticky Booking Summary Widget -->
+      <aside class="card" style="padding: 1.75rem; position: sticky; top: 90px;">
+        <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle);">
+          Reservation Summary
+        </h3>
+
+        <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; font-size: 0.9rem;">
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-secondary);">Base Rate / Hr:</span>
+            <span id="turf-rate-display" style="font-weight: 700; color: #34d399;">₹0</span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-secondary);">Selected Date:</span>
+            <span id="summary-date" style="font-weight: 600; color: var(--text-primary);">Select date</span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-secondary);">Time Slot:</span>
+            <span id="summary-slot" style="font-weight: 600; color: var(--text-primary);">Select slot</span>
+          </div>
+
+          <div id="summary-addons-list"></div>
+
+          <div class="form-group" style="margin-bottom: 0; margin-top: 0.5rem;">
+            <label class="form-label" style="font-size: 0.8rem;">Playing Sport</label>
+            <select id="booking-sport-select" class="form-control" style="font-size: 0.85rem; padding: 0.5rem 0.8rem;">
+            </select>
+          </div>
+        </div>
+
+        <div style="background: var(--bg-surface); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-weight: 700; color: var(--text-primary);">Total Due</span>
+          <span id="summary-total-price" style="font-size: 1.5rem; font-weight: 800; color: #34d399;">₹0</span>
+        </div>
+
+        <button 
+          type="button" 
+          id="proceed-booking-btn" 
+          onclick="openBookingModal()" 
+          class="btn btn-primary btn-block btn-lg" 
+          disabled
+        >
+          Proceed to Book
+        </button>
+
+        <p style="font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: 0.85rem;">
+          🔒 Instant slot lock • No double bookings guaranteed
+        </p>
+      </aside>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Booking Confirmation Modal -->
+<div class="modal-overlay" id="booking-confirm-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title">Confirm Turf Reservation</h3>
+      <button class="modal-close" onclick="closeModal('booking-confirm-modal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="color: var(--text-secondary); margin-bottom: 1.25rem; font-size: 0.9rem;">
+        Please review your match details before confirming your reservation.
+      </p>
+
+      <div style="background: var(--bg-surface); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.9rem; margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Venue:</span>
+          <span id="modal-turf-name" style="font-weight: 700; color: var(--text-primary);"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Location:</span>
+          <span id="modal-turf-location" style="color: var(--text-secondary);"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Match Date:</span>
+          <span id="modal-booking-date" style="font-weight: 600; color: var(--text-primary);"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Time Slot:</span>
+          <span id="modal-booking-time" style="font-weight: 700; color: var(--primary);"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Sport:</span>
+          <span id="modal-booking-sport" style="font-weight: 600;"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Match Gear:</span>
+          <span id="modal-booking-addons" style="font-weight: 600; color: var(--accent-cyan);"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding-top: 0.5rem; border-top: 1px solid var(--border-subtle);">
+          <span style="color: var(--text-primary); font-weight: 700;">Total Payable:</span>
+          <span id="modal-booking-price" style="font-size: 1.25rem; font-weight: 800; color: #34d399;"></span>
+        </div>
+      </div>
+
+      <div style="font-size: 0.8rem; color: var(--text-muted);">
+        👤 Reserving for: <strong id="modal-user-name"></strong> (<span id="modal-user-email"></span>)
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('booking-confirm-modal')">Cancel</button>
+      <button type="button" id="confirm-booking-btn" class="btn btn-primary btn-sm" onclick="submitBooking()">Confirm & Reserve</button>
+    </div>
+  </div>
+</div>
+
+<!-- Booking Success Modal -->
+<div class="modal-overlay" id="booking-success-modal">
+  <div class="modal-content" style="text-align: center; max-width: 500px;">
+    <div class="modal-body" style="padding: 2.5rem 2rem;">
+      <div style="width: 70px; height: 70px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 1.25rem; border: 1px solid rgba(16, 185, 129, 0.4);">
+        ✓
+      </div>
+      <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.4rem;">Booking Confirmed!</h2>
+      <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">Your sports venue has been reserved successfully.</p>
+
+      <div style="background: var(--bg-surface); border-radius: var(--radius-md); padding: 1.25rem; text-align: left; margin-bottom: 1.75rem; font-size: 0.9rem; display: flex; flex-direction: column; gap: 0.6rem;">
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Reference ID:</span>
+          <span id="success-booking-ref" style="font-family: monospace; font-weight: 800; color: var(--primary);"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Venue:</span>
+          <span id="success-turf-name" style="font-weight: 600; color: var(--text-primary);"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Date & Time:</span>
+          <span id="success-date-time" style="font-weight: 600;"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Total Amount:</span>
+          <span id="success-total-paid" style="font-weight: 800; color: #34d399;"></span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; justify-content: center;">
+        <button onclick="closeModal('booking-success-modal')" class="btn btn-secondary btn-sm">Book Another Slot</button>
+        <a href="/bookings" class="btn btn-primary btn-sm">View My Bookings</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/js/turf-detail.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const turfId = {{ turf_id }};
+    initTurfDetail(turfId);
+  });
+</script>
+{% endblock %}

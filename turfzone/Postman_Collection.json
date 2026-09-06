@@ -1,0 +1,286 @@
+{
+  "info": {
+    "name": "TurfZone REST API Collection",
+    "description": "Comprehensive Postman API collection for TurfZone sports facility marketplace and real-time reservation platform.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:5000",
+      "type": "string"
+    },
+    {
+      "key": "userToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dhanesh Kumar\",\n  \"email\": \"newuser@turfzone.com\",\n  \"phone\": \"+91 9840123456\",\n  \"password\": \"User@123\",\n  \"confirm_password\": \"User@123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "auth", "register"] }
+          }
+        },
+        {
+          "name": "Login (User)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@turfzone.com\",\n  \"password\": \"User@123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Login (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@turfzone.com\",\n  \"password\": \"Admin@123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Get Current User Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/me", "host": ["{{baseUrl}}"], "path": ["api", "auth", "me"] }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{userToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dhanesh Kumar\",\n  \"phone\": \"+91 9840999888\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/profile", "host": ["{{baseUrl}}"], "path": ["api", "auth", "profile"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Turfs Marketplace",
+      "item": [
+        {
+          "name": "Get All Turfs (with Filters & Sort)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/turfs?sport=Football&location=Velachery&sort=rating_desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "turfs"],
+              "query": [
+                { "key": "sport", "value": "Football" },
+                { "key": "location", "value": "Velachery" },
+                { "key": "sort", "value": "rating_desc" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Turf Details by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/turfs/1", "host": ["{{baseUrl}}"], "path": ["api", "turfs", "1"] }
+          }
+        },
+        {
+          "name": "Check Turf Slot Availability for Date",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/turfs/1/availability?date=2026-09-05",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "turfs", "1", "availability"],
+              "query": [{ "key": "date", "value": "2026-09-05" }]
+            }
+          }
+        },
+        {
+          "name": "Admin Create Turf",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Adyar Arena Club\",\n  \"location\": \"Adyar, Chennai\",\n  \"address\": \"10 Gandhi Nagar 1st Main Rd, Adyar, Chennai 600020\",\n  \"sport\": \"Football, Cricket\",\n  \"description\": \"State of the art 5v5 turf with floodlights and shower facilities.\",\n  \"facilities\": \"Floodlights, Parking, Changing Rooms, Drinking Water\",\n  \"price_per_hour\": 1300,\n  \"image_url\": \"https://images.unsplash.com/photo-1529900245534-47fbf8221565\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/turfs", "host": ["{{baseUrl}}"], "path": ["api", "turfs"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bookings Engine",
+      "item": [
+        {
+          "name": "Create Reservation (Guaranteed Conflict-Protected)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{userToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"turf_id\": 1,\n  \"slot_id\": 4,\n  \"booking_date\": \"2026-09-06\",\n  \"sport\": \"Football\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/bookings", "host": ["{{baseUrl}}"], "path": ["api", "bookings"] }
+          }
+        },
+        {
+          "name": "Get User Bookings (Upcoming / History)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookings?tab=upcoming",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookings"],
+              "query": [{ "key": "tab", "value": "upcoming" }]
+            }
+          }
+        },
+        {
+          "name": "Cancel Booking & Release Slot",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/bookings/1/cancel", "host": ["{{baseUrl}}"], "path": ["api", "bookings", "1", "cancel"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tournaments",
+      "item": [
+        {
+          "name": "Get All Tournaments",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/tournaments?sport=Football&status=OPEN", "host": ["{{baseUrl}}"], "path": ["api", "tournaments"] }
+          }
+        },
+        {
+          "name": "Register Squad for Tournament",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{userToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"team_name\": \"Chennai Strikers\",\n  \"captain_name\": \"Dhanesh Kumar\",\n  \"contact\": \"+91 9840123456\",\n  \"player_count\": 8,\n  \"players\": \"Dhanesh, Rahul, Sanjay, Vignesh, Karthik, Arun, Suresh, Vijay\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/tournaments/1/register", "host": ["{{baseUrl}}"], "path": ["api", "tournaments", "1", "register"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Operations",
+      "item": [
+        {
+          "name": "Get Platform Statistics & KPIs",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/admin/stats", "host": ["{{baseUrl}}"], "path": ["api", "admin", "stats"] }
+          }
+        },
+        {
+          "name": "Get All Registered Athletes",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/admin/users", "host": ["{{baseUrl}}"], "path": ["api", "admin", "users"] }
+          }
+        },
+        {
+          "name": "Get All Bookings (Admin View)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/admin/bookings", "host": ["{{baseUrl}}"], "path": ["api", "admin", "bookings"] }
+          }
+        },
+        {
+          "name": "Update Booking Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"COMPLETED\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/admin/bookings/1/status", "host": ["{{baseUrl}}"], "path": ["api", "admin", "bookings", "1", "status"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Turf-Bot AI Assistant",
+      "item": [
+        {
+          "name": "Query Turf-Bot (Football Turfs)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"Find top football turfs in Velachery\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/chatbot/message", "host": ["{{baseUrl}}"], "path": ["api", "chatbot", "message"] }
+          }
+        },
+        {
+          "name": "Query Turf-Bot (Cheapest Turfs)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"What is the cheapest cricket turf in Chennai?\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/chatbot/message", "host": ["{{baseUrl}}"], "path": ["api", "chatbot", "message"] }
+          }
+        }
+      ]
+    }
+  ]
+}

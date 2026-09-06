@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}User Profile & Settings — TurfZone{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 3rem; padding-bottom: 5rem; max-width: 860px;">
+  
+  <div class="section-header" style="margin-bottom: 2.5rem;">
+    <h1 class="section-title">Account Settings</h1>
+    <p class="section-subtitle">Manage your player profile, contact information, and security preferences.</p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 280px 1fr; gap: 2rem; align-items: flex-start;">
+    
+    <!-- Profile Card Summary -->
+    <div class="card" style="padding: 2rem 1.5rem; text-align: center;">
+      <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent-cyan)); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 1.25rem; box-shadow: 0 0 15px var(--primary-glow);">
+        👤
+      </div>
+      <h3 id="profile-display-name" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.2rem;">Loading...</h3>
+      <div id="profile-display-email" style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;"></div>
+      
+      <div style="margin-bottom: 1.5rem;">
+        <span id="profile-display-role" class="badge badge-emerald">USER</span>
+      </div>
+
+      <div style="border-top: 1px solid var(--border-subtle); padding-top: 1.25rem; text-align: left; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.6rem;">
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Phone:</span>
+          <span id="profile-display-phone" style="font-weight: 600; color: var(--text-primary);"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Total Bookings:</span>
+          <span id="profile-booking-count" style="font-weight: 700; color: #34d399;">0</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Member Since:</span>
+          <span id="profile-display-joined" style="color: var(--text-secondary);"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Forms Area -->
+    <div style="display: flex; flex-direction: column; gap: 2rem;">
+      
+      <!-- Edit Profile Info -->
+      <div class="card" style="padding: 1.75rem;">
+        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1.25rem; color: var(--text-primary);">Personal Details</h3>
+        <form id="edit-profile-form">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="edit-profile-name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contact Phone Number</label>
+            <input type="tel" id="edit-profile-phone" class="form-control" required>
+          </div>
+          <button type="submit" id="save-profile-btn" class="btn btn-primary btn-sm">Save Profile Changes</button>
+        </form>
+      </div>
+
+      <!-- Change Password -->
+      <div class="card" style="padding: 1.75rem;">
+        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1.25rem; color: var(--text-primary);">Security & Password</h3>
+        <form id="change-password-form">
+          <div class="form-group">
+            <label class="form-label">Current Password</label>
+            <input type="password" id="current-password" class="form-control" required>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">New Password</label>
+              <input type="password" id="new-password" class="form-control" placeholder="Min 6 characters" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Confirm New Password</label>
+              <input type="password" id="confirm-new-password" class="form-control" required>
+            </div>
+          </div>
+          <button type="submit" id="save-password-btn" class="btn btn-secondary btn-sm">Update Password</button>
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/js/profile.js"></script>
+{% endblock %}

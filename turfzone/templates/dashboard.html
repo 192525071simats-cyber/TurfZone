@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}User Dashboard — TurfZone{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 3rem; padding-bottom: 5rem;">
+  
+  <!-- Greeting Header -->
+  <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 2.5rem;">
+    <div>
+      <h1 class="section-title" id="dashboard-user-greeting">Welcome back!</h1>
+      <p class="section-subtitle">Track your upcoming turf matches, booking history, and tournament rosters.</p>
+    </div>
+    <div style="display: flex; gap: 0.75rem;">
+      <a href="/turfs" class="btn btn-primary btn-sm">⚡ Book Turf</a>
+      <a href="/tournaments" class="btn btn-secondary btn-sm">🏆 Tournaments</a>
+    </div>
+  </div>
+
+  <!-- Metric Stat Cards -->
+  <div class="stats-grid">
+    <div class="card stat-card">
+      <div class="stat-icon emerald">📋</div>
+      <div class="stat-info">
+        <div class="stat-value" id="stat-total-bookings">0</div>
+        <div class="stat-label">Total Bookings</div>
+      </div>
+    </div>
+
+    <div class="card stat-card">
+      <div class="stat-icon cyan">⚽</div>
+      <div class="stat-info">
+        <div class="stat-value" id="stat-active-bookings">0</div>
+        <div class="stat-label">Active / Upcoming</div>
+      </div>
+    </div>
+
+    <div class="card stat-card">
+      <div class="stat-icon blue">✓</div>
+      <div class="stat-info">
+        <div class="stat-value" id="stat-completed-bookings">0</div>
+        <div class="stat-label">Completed Matches</div>
+      </div>
+    </div>
+
+    <div class="card stat-card">
+      <div class="stat-icon amber">💰</div>
+      <div class="stat-info">
+        <div class="stat-value" id="stat-total-spent">₹0</div>
+        <div class="stat-label">Total Invested</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Dashboard Columns -->
+  <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: flex-start; margin-bottom: 3rem;">
+    
+    <!-- Left Column: Next Match Hero & Recent Activity -->
+    <div>
+      
+      <!-- Next Match Widget -->
+      <div id="next-match-container" style="margin-bottom: 2.5rem;">
+        <div class="spinner"></div>
+      </div>
+
+      <!-- Recent Bookings Table -->
+      <div class="card" style="padding: 1.75rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary);">Recent Bookings</h3>
+          <a href="/bookings" style="font-size: 0.85rem; color: var(--primary); font-weight: 600;">View All →</a>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Reference</th>
+                <th>Venue</th>
+                <th>Date</th>
+                <th>Time Slot</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="recent-bookings-tbody">
+              <tr>
+                <td colspan="6" style="text-align: center; padding: 2rem;"><div class="spinner"></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column: Quick Actions & Recommended Turfs -->
+    <div>
+      
+      <!-- Quick Actions Card -->
+      <div class="card" style="padding: 1.5rem; margin-bottom: 2rem;">
+        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary);">Quick Actions</h3>
+        <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+          <a href="/turfs" class="btn btn-secondary btn-block" style="justify-content: flex-start; gap: 0.75rem;">
+            <span>🔍</span> Find & Book Turf
+          </a>
+          <a href="/bookings" class="btn btn-secondary btn-block" style="justify-content: flex-start; gap: 0.75rem;">
+            <span>📅</span> Manage My Bookings
+          </a>
+          <a href="/tournaments" class="btn btn-secondary btn-block" style="justify-content: flex-start; gap: 0.75rem;">
+            <span>🏆</span> Join Tournament
+          </a>
+          <a href="/turf-bot" class="btn btn-secondary btn-block" style="justify-content: flex-start; gap: 0.75rem;">
+            <span>🤖</span> Ask Turf-Bot
+          </a>
+          <a href="/profile" class="btn btn-secondary btn-block" style="justify-content: flex-start; gap: 0.75rem;">
+            <span>👤</span> Account Settings
+          </a>
+        </div>
+      </div>
+
+      <!-- Recommended Turfs -->
+      <div class="card" style="padding: 1.5rem;">
+        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary);">Top Recommended Arenas</h3>
+        <div id="dashboard-recommended-turfs" style="display: flex; flex-direction: column; gap: 1rem;">
+          <div class="spinner"></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/js/dashboard.js"></script>
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}Register Account — TurfZone{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 3.5rem; padding-bottom: 5rem; max-width: 520px;">
+  
+  <div class="card" style="padding: 2.5rem 2rem;">
+    
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <div class="brand-logo" style="justify-content: center; margin-bottom: 0.75rem;">
+        <div class="brand-icon">⚡</div>
+        <span>Turf<span class="zone">Zone</span></span>
+      </div>
+      <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.25rem;">Create Your Account</h1>
+      <p style="font-size: 0.875rem; color: var(--text-secondary);">Join TurfZone to reserve slots and join tournaments in seconds.</p>
+    </div>
+
+    <form id="register-form">
+      <div class="form-group">
+        <label class="form-label">Full Name *</label>
+        <input type="text" id="reg-name" class="form-control" placeholder="e.g. Dhanesh Kumar" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email Address *</label>
+        <input type="email" id="reg-email" class="form-control" placeholder="name@example.com" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Contact Phone Number *</label>
+        <input type="tel" id="reg-phone" class="form-control" placeholder="+91 9840123456" required>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-group">
+          <label class="form-label">Password *</label>
+          <input type="password" id="reg-password" class="form-control" placeholder="Min 6 chars" minlength="6" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password *</label>
+          <input type="password" id="reg-confirm-password" class="form-control" placeholder="Repeat password" required>
+        </div>
+      </div>
+
+      <button type="submit" id="reg-submit-btn" class="btn btn-primary btn-block btn-lg" style="margin-top: 1rem;">
+        Create Account
+      </button>
+    </form>
+
+    <div style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+      Already have an account? <a href="/login" style="font-weight: 600;">Log in here</a>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  document.getElementById('register-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('reg-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const phone = document.getElementById('reg-phone').value.trim();
+    const password = document.getElementById('reg-password').value;
+    const confirmPassword = document.getElementById('reg-confirm-password').value;
+
+    if (password !== confirmPassword) {
+      Toast.error('Passwords do not match. Please re-enter.');
+      return;
+    }
+
+    if (password.length < 6) {
+      Toast.error('Password must be at least 6 characters long.');
+      return;
+    }
+
+    const btn = document.getElementById('reg-submit-btn');
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = 'Creating Account...';
+    }
+
+    const payload = {
+      name,
+      email,
+      phone,
+      password,
+      confirm_password: confirmPassword
+    };
+
+    const res = await Auth.register(payload);
+
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = 'Create Account';
+    }
+
+    if (res.success) {
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 1200);
+    }
+  });
+</script>
+{% endblock %}

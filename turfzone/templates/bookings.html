@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}My Bookings — TurfZone{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 3rem; padding-bottom: 5rem; max-width: 960px;">
+  
+  <div class="section-header" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+    <div>
+      <h1 class="section-title">My Match Bookings</h1>
+      <p class="section-subtitle">View your confirmed match slots, check timings, or cancel reservations.</p>
+    </div>
+    <a href="/turfs" class="btn btn-primary btn-sm">⚡ Book New Turf</a>
+  </div>
+
+  <!-- Tabs Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="all">
+      All (<span id="count-all">0</span>)
+    </button>
+    <button class="tab-btn" data-tab="upcoming">
+      Upcoming (<span id="count-upcoming">0</span>)
+    </button>
+    <button class="tab-btn" data-tab="current">
+      Today's Matches (<span id="count-current">0</span>)
+    </button>
+    <button class="tab-btn" data-tab="previous">
+      Completed & Cancelled (<span id="count-previous">0</span>)
+    </button>
+  </div>
+
+  <!-- Bookings List Container -->
+  <div id="bookings-list-container">
+    <div class="spinner"></div>
+  </div>
+
+</div>
+
+<!-- Cancel Booking Confirmation Modal -->
+<div class="modal-overlay" id="cancel-confirm-modal">
+  <div class="modal-content" style="max-width: 480px;">
+    <div class="modal-header">
+      <h3 class="modal-title">Cancel Reservation</h3>
+      <button class="modal-close" onclick="closeModal('cancel-confirm-modal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="color: var(--text-secondary); margin-bottom: 1.25rem;">
+        Are you sure you want to cancel booking <strong id="cancel-modal-ref" style="color: var(--primary);"></strong> for <strong id="cancel-modal-turf"></strong>?
+      </p>
+      
+      <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 1rem; border-radius: var(--radius-md); font-size: 0.85rem; color: #fca5a5;">
+        ⚠️ <strong>Note:</strong> Your reservation will be marked as CANCELLED and the time slot will be instantly released for other teams to book.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('cancel-confirm-modal')">Keep Booking</button>
+      <button type="button" id="confirm-cancel-btn" class="btn btn-danger btn-sm" onclick="confirmCancelBooking()">Yes, Cancel Reservation</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/js/bookings.js"></script>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}Explore Sports Turfs — TurfZone{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 3rem; padding-bottom: 5rem;">
+  
+  <div class="section-header" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+    <div>
+      <h1 class="section-title">Explore Sports Turfs</h1>
+      <p class="section-subtitle">Discover and book verified arenas with real-time slot availability in Chennai.</p>
+    </div>
+    <div>
+      <span id="turf-count-badge" class="badge badge-emerald" style="font-size: 0.85rem; padding: 0.4rem 0.85rem;">Loading Turfs...</span>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 280px 1fr; gap: 2rem; align-items: flex-start;">
+    
+    <!-- Filter Sidebar -->
+    <aside class="card" style="padding: 1.5rem; position: sticky; top: 90px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary);">Filter Arenas</h3>
+        <button onclick="resetFilters()" style="background: none; border: none; color: var(--primary); font-size: 0.8rem; font-weight: 600; cursor: pointer;">Reset</button>
+      </div>
+
+      <!-- Keyword Search -->
+      <div class="form-group">
+        <label class="form-label">Search Keyword</label>
+        <input type="text" id="filter-search" class="form-control" placeholder="Turf name, address...">
+      </div>
+
+      <!-- Sport Filter -->
+      <div class="form-group">
+        <label class="form-label">Sport Category</label>
+        <select id="filter-sport" class="form-control">
+          <option value="all">All Sports</option>
+          <option value="Football">Football</option>
+          <option value="Cricket">Cricket</option>
+          <option value="Badminton">Badminton</option>
+          <option value="Tennis">Tennis</option>
+          <option value="Basketball">Basketball</option>
+        </select>
+      </div>
+
+      <!-- Location Filter -->
+      <div class="form-group">
+        <label class="form-label">Location / Area</label>
+        <select id="filter-location" class="form-control">
+          <option value="all">All Chennai Areas</option>
+          <option value="Velachery">Velachery</option>
+          <option value="Marina">Marina / Triplicane</option>
+          <option value="ECR">ECR / Injambakkam</option>
+          <option value="Anna Nagar">Anna Nagar</option>
+          <option value="OMR">OMR / Sholinganallur</option>
+          <option value="T. Nagar">T. Nagar</option>
+        </select>
+      </div>
+
+      <!-- Price Range Slider -->
+      <div class="form-group">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;">
+          <label class="form-label" style="margin-bottom: 0;">Max Price / Hour</label>
+          <span id="price-val-display" style="font-size: 0.85rem; font-weight: 700; color: #34d399;">₹2,500</span>
+        </div>
+        <input type="range" id="filter-price" min="800" max="2500" step="100" value="2500" style="width: 100%; accent-color: var(--primary);">
+      </div>
+
+      <!-- Minimum Rating -->
+      <div class="form-group">
+        <label class="form-label">Minimum Rating</label>
+        <select id="filter-rating" class="form-control">
+          <option value="0">Any Rating</option>
+          <option value="4.5">⭐ 4.5 & above</option>
+          <option value="4.8">⭐ 4.8 & above</option>
+        </select>
+      </div>
+
+      <!-- Sort By -->
+      <div class="form-group" style="margin-bottom: 0;">
+        <label class="form-label">Sort Order</label>
+        <select id="filter-sort" class="form-control">
+          <option value="rating_desc">Highest Rated</option>
+          <option value="price_asc">Price: Low to High</option>
+          <option value="price_desc">Price: High to Low</option>
+          <option value="newest">Newest Added</option>
+        </select>
+      </div>
+    </aside>
+
+    <!-- Turfs Dynamic Grid -->
+    <div>
+      <div class="turfs-grid" id="turfs-grid-container">
+        <div class="spinner" style="grid-column: 1 / -1;"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/js/turfs.js"></script>
+{% endblock %}

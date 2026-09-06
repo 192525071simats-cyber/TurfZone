@@ -1,0 +1,389 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Control Center — TurfZone{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 2.5rem; padding-bottom: 5rem;">
+  
+  <div class="section-header" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+    <div>
+      <div style="display: inline-flex; align-items: center; gap: 0.4rem; margin-bottom: 0.5rem;">
+        <span class="badge badge-amber">🛡️ Administrator Portal</span>
+      </div>
+      <h1 class="section-title">Admin Control Center</h1>
+      <p class="section-subtitle">Real-time facility operations, reservation management, tournament orchestration, and financial statistics.</p>
+    </div>
+  </div>
+
+  <!-- Metric Statistics Cards -->
+  <div class="stats-grid">
+    <div class="card stat-card">
+      <div class="stat-icon emerald">💵</div>
+      <div class="stat-info">
+        <div class="stat-value" id="admin-stat-revenue">₹0</div>
+        <div class="stat-label">Total Platform Revenue</div>
+      </div>
+    </div>
+
+    <div class="card stat-card">
+      <div class="stat-icon cyan">📋</div>
+      <div class="stat-info">
+        <div class="stat-value" id="admin-stat-bookings">0</div>
+        <div class="stat-label">Total Reservations</div>
+      </div>
+    </div>
+
+    <div class="card stat-card">
+      <div class="stat-icon blue">🏟️</div>
+      <div class="stat-info">
+        <div class="stat-value" id="admin-stat-turfs">0</div>
+        <div class="stat-label">Active / Total Turfs</div>
+      </div>
+    </div>
+
+    <div class="card stat-card">
+      <div class="stat-icon amber">👥</div>
+      <div class="stat-info">
+        <div class="stat-value" id="admin-stat-users">0</div>
+        <div class="stat-label">Registered Athletes</div>
+      </div>
+    </div>
+
+    <div class="card stat-card">
+      <div class="stat-icon purple">⚡</div>
+      <div class="stat-info">
+        <div class="stat-value" id="admin-stat-today-bookings">0</div>
+        <div class="stat-label">Today's Matches</div>
+      </div>
+    </div>
+
+    <div class="card stat-card">
+      <div class="stat-icon emerald">🏆</div>
+      <div class="stat-info">
+        <div class="stat-value" id="admin-stat-tourn-regs">0</div>
+        <div class="stat-label">Tournament Teams</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Navigation Tabs -->
+  <div class="tab-nav" style="margin-bottom: 2rem;">
+    <button class="tab-btn admin-nav-btn active" data-tab="overview">📊 Overview & Activity</button>
+    <button class="tab-btn admin-nav-btn" data-tab="turfs">🏟️ Turf Management</button>
+    <button class="tab-btn admin-nav-btn" data-tab="bookings">📋 Bookings Management</button>
+    <button class="tab-btn admin-nav-btn" data-tab="tournaments">🏆 Tournaments</button>
+    <button class="tab-btn admin-nav-btn" data-tab="users">👥 User Directory</button>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- TAB 1: OVERVIEW -->
+  <!-- ============================================================ -->
+  <div id="admin-tab-overview" class="admin-tab-section">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+      
+      <!-- Recent Bookings Card -->
+      <div class="card" style="padding: 1.75rem;">
+        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1.25rem; color: var(--text-primary);">Recent Bookings</h3>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Ref</th>
+                <th>User</th>
+                <th>Turf</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="admin-recent-bookings-tbody">
+              <tr><td colspan="6" style="text-align: center;"><div class="spinner"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Recent Users Card -->
+      <div class="card" style="padding: 1.75rem;">
+        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1.25rem; color: var(--text-primary);">Recent Users</h3>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Role</th>
+                <th>Joined</th>
+              </tr>
+            </thead>
+            <tbody id="admin-recent-users-tbody">
+              <tr><td colspan="5" style="text-align: center;"><div class="spinner"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- TAB 2: TURF MANAGEMENT -->
+  <!-- ============================================================ -->
+  <div id="admin-tab-turfs" class="admin-tab-section" style="display: none;">
+    <div class="card" style="padding: 1.75rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary);">All Sports Facilities</h3>
+        <button onclick="openAddTurfModal()" class="btn btn-primary btn-sm">➕ Add New Turf</button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Turf Name</th>
+              <th>Location</th>
+              <th>Sports</th>
+              <th>Rate / Hour</th>
+              <th>Rating</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="admin-turfs-tbody">
+            <tr><td colspan="7" style="text-align: center;"><div class="spinner"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- TAB 3: BOOKINGS MANAGEMENT -->
+  <!-- ============================================================ -->
+  <div id="admin-tab-bookings" class="admin-tab-section" style="display: none;">
+    <div class="card" style="padding: 1.75rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary);">Customer Reservation Records</h3>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Booking Ref</th>
+              <th>Customer</th>
+              <th>Venue</th>
+              <th>Date & Slot</th>
+              <th>Price</th>
+              <th>Status Action</th>
+            </tr>
+          </thead>
+          <tbody id="admin-all-bookings-tbody">
+            <tr><td colspan="6" style="text-align: center;"><div class="spinner"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- TAB 4: TOURNAMENT MANAGEMENT -->
+  <!-- ============================================================ -->
+  <div id="admin-tab-tournaments" class="admin-tab-section" style="display: none;">
+    <div class="card" style="padding: 1.75rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary);">Tournaments & Leagues Orchestration</h3>
+        <button onclick="openAddTournamentModal()" class="btn btn-primary btn-sm">➕ Create Tournament</button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Tournament Name</th>
+              <th>Sport</th>
+              <th>Venue</th>
+              <th>Date</th>
+              <th>Teams</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="admin-tournaments-tbody">
+            <tr><td colspan="7" style="text-align: center;"><div class="spinner"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- TAB 5: USER MANAGEMENT -->
+  <!-- ============================================================ -->
+  <div id="admin-tab-users" class="admin-tab-section" style="display: none;">
+    <div class="card" style="padding: 1.75rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary);">Athlete & User Directory</h3>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Role</th>
+              <th>Bookings</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="admin-users-tbody">
+            <tr><td colspan="7" style="text-align: center;"><div class="spinner"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Admin Add / Edit Turf Modal -->
+<div class="modal-overlay" id="admin-turf-modal">
+  <div class="modal-content" style="max-width: 600px;">
+    <div class="modal-header">
+      <h3 class="modal-title" id="turf-modal-title">Add New Turf</h3>
+      <button class="modal-close" onclick="closeModal('admin-turf-modal')">&times;</button>
+    </div>
+    <form id="admin-turf-form">
+      <div class="modal-body">
+        <input type="hidden" id="turf-form-id">
+        
+        <div class="form-group">
+          <label class="form-label">Turf / Arena Name *</label>
+          <input type="text" id="turf-form-name" class="form-control" placeholder="e.g. Marina Champions Arena" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label">Location / Area *</label>
+            <input type="text" id="turf-form-location" class="form-control" placeholder="e.g. Velachery, Chennai" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Sports (Comma-separated) *</label>
+            <input type="text" id="turf-form-sport" class="form-control" placeholder="e.g. Football, Cricket" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Full Address *</label>
+          <input type="text" id="turf-form-address" class="form-control" placeholder="Street address, landmarks..." required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label">Price per Hour (₹) *</label>
+            <input type="number" id="turf-form-price" class="form-control" min="100" max="10000" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Facilities (Comma-separated)</label>
+            <input type="text" id="turf-form-facilities" class="form-control" placeholder="Floodlights, Parking, Changing Rooms">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Cover Image URL</label>
+          <input type="url" id="turf-form-image" class="form-control" placeholder="https://...">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description & Highlights *</label>
+          <textarea id="turf-form-desc" class="form-control" placeholder="Detailed description of ground dimensions, turf grass type, amenities..." required></textarea>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: var(--text-primary); font-size: 0.9rem;">
+            <input type="checkbox" id="turf-form-active" checked style="accent-color: var(--primary); width: 18px; height: 18px;">
+            <span>Active & Open for Public Booking</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('admin-turf-modal')">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save Turf</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Admin Add Tournament Modal -->
+<div class="modal-overlay" id="admin-tourn-modal">
+  <div class="modal-content" style="max-width: 600px;">
+    <div class="modal-header">
+      <h3 class="modal-title" id="tourn-modal-title">Create Tournament</h3>
+      <button class="modal-close" onclick="closeModal('admin-tourn-modal')">&times;</button>
+    </div>
+    <form id="admin-tourn-form">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Tournament Name *</label>
+          <input type="text" id="tourn-form-name" class="form-control" placeholder="e.g. Chennai Champions League 2026" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label">Sport *</label>
+            <input type="text" id="tourn-form-sport" class="form-control" placeholder="e.g. Football" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Venue *</label>
+            <input type="text" id="tourn-form-venue" class="form-control" placeholder="e.g. Marina Champions Arena" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label">Tournament Date *</label>
+            <input type="date" id="tourn-form-date" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Registration Deadline *</label>
+            <input type="date" id="tourn-form-deadline" class="form-control" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label">Entry Fee (₹) *</label>
+            <input type="number" id="tourn-form-fee" class="form-control" min="0" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Max Teams Capacity *</label>
+            <input type="number" id="tourn-form-teams" class="form-control" min="2" max="64" value="16" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Cover Image URL</label>
+          <input type="url" id="tourn-form-image" class="form-control" placeholder="https://...">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="form-label">Tournament Description & Format *</label>
+          <textarea id="tourn-form-desc" class="form-control" placeholder="Knockout format, prize pool details, rules..." required></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('admin-tourn-modal')">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-sm">Create Tournament</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/js/admin.js"></script>
+{% endblock %}

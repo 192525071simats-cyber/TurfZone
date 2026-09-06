@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Turf-Bot Assistant — TurfZone{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 2.5rem; padding-bottom: 5rem; max-width: 1080px;">
+  
+  <div class="section-header" style="text-align: center; margin-bottom: 2rem;">
+    <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--primary-light); border: 1px solid rgba(16, 185, 129, 0.3); padding: 0.35rem 0.85rem; border-radius: var(--radius-full); margin-bottom: 0.75rem;">
+      <span>🤖</span>
+      <span style="font-size: 0.8rem; font-weight: 700; color: #34d399; text-transform: uppercase;">Smart Database Assistant</span>
+    </div>
+    <h1 class="section-title">Turf-Bot Assistant</h1>
+    <p class="section-subtitle">Real-time facility recommendations, pricing comparison, and reservation queries.</p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: flex-start;">
+    
+    <!-- Chat Container -->
+    <div class="chat-container">
+      
+      <!-- Chat Header -->
+      <div class="chat-header">
+        <div class="chat-avatar">🤖</div>
+        <div>
+          <div style="font-weight: 700; font-size: 1.05rem; color: var(--text-primary);">Turf-Bot</div>
+          <div style="font-size: 0.75rem; color: #34d399; display: flex; align-items: center; gap: 0.3rem;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #34d399;"></span>
+            Online • Connected to TurfZone Database
+          </div>
+        </div>
+      </div>
+
+      <!-- Messages Stream -->
+      <div class="chat-messages" id="chat-messages-container">
+        <!-- Messages appended dynamically by turf-bot.js -->
+      </div>
+
+      <!-- Quick Action Chips -->
+      <div class="chat-chips" id="chat-chips-container">
+        <button type="button" class="chip-btn" onclick="sendQuickMessage('⚽ Find Football Turfs')">⚽ Find Football Turfs</button>
+        <button type="button" class="chip-btn" onclick="sendQuickMessage('🏏 Find Cricket Turfs')">🏏 Find Cricket Turfs</button>
+        <button type="button" class="chip-btn" onclick="sendQuickMessage('💰 Cheapest Turfs')">💰 Cheapest Turfs</button>
+        <button type="button" class="chip-btn" onclick="sendQuickMessage('🏆 Upcoming Tournaments')">🏆 Upcoming Tournaments</button>
+        <button type="button" class="chip-btn" onclick="sendQuickMessage('📅 My Bookings')">📅 My Bookings</button>
+      </div>
+
+      <!-- Input Bar -->
+      <form id="chat-form" class="chat-input-wrap">
+        <input 
+          type="text" 
+          id="chat-user-input" 
+          class="form-control" 
+          placeholder="Ask Turf-Bot (e.g. 'Cheapest cricket turf in Velachery', 'How do I cancel?')..." 
+          autocomplete="off"
+          required
+        >
+        <button type="submit" class="btn btn-primary" style="padding: 0.75rem 1.25rem;">
+          Send ➔
+        </button>
+      </form>
+
+    </div>
+
+    <!-- Assistant Capabilities Sidebar -->
+    <aside class="card" style="padding: 1.5rem;">
+      <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary);">Turf-Bot Powers</h3>
+      
+      <div style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.85rem; color: var(--text-secondary);">
+        <div style="display: flex; gap: 0.75rem;">
+          <span style="font-size: 1.2rem;">⚽</span>
+          <div>
+            <strong style="color: var(--text-primary);">Sport Matching:</strong> Ask for football, cricket, badminton, or tennis grounds in Chennai.
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem;">
+          <span style="font-size: 1.2rem;">💰</span>
+          <div>
+            <strong style="color: var(--text-primary);">Rate Comparison:</strong> Quickly discover venues under ₹1000/hour.
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem;">
+          <span style="font-size: 1.2rem;">🏆</span>
+          <div>
+            <strong style="color: var(--text-primary);">Tournaments:</strong> Check registration deadlines, entry fees, and open team slots.
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem;">
+          <span style="font-size: 1.2rem;">📋</span>
+          <div>
+            <strong style="color: var(--text-primary);">Reservation Helper:</strong> Lookup your active matches and learn cancellation rules.
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/js/turf-bot.js"></script>
+{% endblock %}
